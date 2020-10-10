@@ -54,7 +54,7 @@ namespace CouchBot.UserCommands.Modules
                                 covidData.Deaths, covidData.TodayDeaths));
                             default:
                                 return ReplyAsync(string.Format("Great news! {0} people recovered today.",
-                                covidData.Cases, covidData.TodayCases));
+                                covidData.TodayRecovered));
                         }
                     }
                     else
