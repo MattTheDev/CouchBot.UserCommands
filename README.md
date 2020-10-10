@@ -1,3 +1,5 @@
+![.NET Core](https://github.com/MattTheDev/CouchBot.UserCommands/workflows/.NET%20Core/badge.svg?branch=main)
+
 # CouchBot - Submit A Command!
 
 Want to create a command that may become a part of CouchBot? This is where you can do just that!
