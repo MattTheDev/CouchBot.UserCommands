@@ -23,51 +23,49 @@ namespace CouchBot.UserCommands.Modules
         //    return ReplyAsync("Your Return Text!");
         //}
 
-
+        /// <summary>
+        /// Originally created by Farshan Ahamed. Thanks!
+        /// Prepared for import into CouchBot by Matt.
+        /// </summary>
+        /// <returns>Outputs message to Discord Channel.</returns>
         [Command("covid", RunMode = RunMode.Async)]
         [Alias("covid status", "covid stats", "covid news", "covid today", "covid updates", "corona", "coronavirus")]
         [Summary("returns the latest covid cases cases updates using public API")]
-        public Task GetCovidDataAsync()
+        public async Task GetCovidDataAsync()
         {
+            string output;
+
             try
             {
-                using (var client = new HttpClient())
+                using var client = new HttpClient { BaseAddress = new Uri("https://corona.lmao.ninja/") };
+
+                var response = await client.GetAsync("v2/all");
+
+                if (response.IsSuccessStatusCode)
                 {
-                    client.BaseAddress = new Uri("https://corona.lmao.ninja/");
-                    var response = client.GetAsync("v2/all").GetAwaiter().GetResult();
+                    var data = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    var covidData = JsonConvert.DeserializeObject<CovidData>(data);
+                    var random = new Random();
+                    var number = random.Next(1, 4);
 
-                    if (response.IsSuccessStatusCode)
+                    output = number switch
                     {
-                        var data = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                        CovidData covidData = JsonConvert.DeserializeObject<CovidData>(data);
-
-                        Random random = new Random();
-                        var number = random.Next(1, 4);
-
-                        switch (number)
-                        {
-                            case 1:
-                                return ReplyAsync(string.Format("Out of {0} total cases, {1} were reported today.",
-                                covidData.Cases, covidData.TodayCases));
-                            case 2:
-                                return ReplyAsync(string.Format("Out of {0} deaths, {1} were died today.",
-                                covidData.Deaths, covidData.TodayDeaths));
-                            default:
-                                return ReplyAsync(string.Format("Great news! {0} people recovered today.",
-                                covidData.TodayRecovered));
-                        }
-                    }
-                    else
-                    {
-                        return ReplyAsync("I'm feeling dizzy");
-                    }
+                        1 => $"Out of {covidData.Cases:n0} total cases, {covidData.TodayCases:n0} were reported today.",
+                        2 => $"Out of {covidData.Deaths:n0} deaths, {covidData.TodayDeaths:n0} died today.",
+                        _ => $"Great news! {covidData.TodayRecovered:n0} people recovered today."
+                    };
+                }
+                else
+                {
+                    output = "I'm feeling dizzy";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ReplyAsync("I'm exhausted");
+                output = "I'm exhausted";
             }
 
+            await ReplyAsync(output);
         }
     }
 }
