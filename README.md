@@ -1,7 +1,7 @@
-![.NET Core](https://github.com/MattTheDev/CouchBot.UserCommands/workflows/.NET%20Core/badge.svg?branch=main)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+![.NET Core](https://github.com/MattTheDev/CouchBot.UserCommands/workflows/.NET%20Core/badge.svg?branch=main)
 
 # CouchBot - Submit A Command!
 
