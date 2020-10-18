@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 ![.NET Core](https://github.com/MattTheDev/CouchBot.UserCommands/workflows/.NET%20Core/badge.svg?branch=main)
 
@@ -37,6 +37,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/FarshanAhamed"><img src="https://avatars0.githubusercontent.com/u/15251751?v=4" width="100px;" alt=""/><br /><sub><b>Farshan Ahamed</b></sub></a><br /><a href="https://github.com/MattTheDev/CouchBot.UserCommands/commits?author=FarshanAhamed" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/dimitrov-d"><img src="https://avatars3.githubusercontent.com/u/35041127?v=4" width="100px;" alt=""/><br /><sub><b>Damjan Dimitrov</b></sub></a><br /><a href="https://github.com/MattTheDev/CouchBot.UserCommands/commits?author=dimitrov-d" title="Code">💻</a></td>
   </tr>
 </table>
 
