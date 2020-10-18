@@ -67,5 +67,34 @@ namespace CouchBot.UserCommands.Modules
 
             await ReplyAsync(output);
         }
+
+        [Command("Advice", RunMode = RunMode.Async)]
+        [Alias("advice", "quote", "tip")]
+        [Summary("returns a random life advice")]
+        public async Task GetAdviceAsync()
+        {
+            string errorMessage = "An error occured while fetching advice";
+
+            try
+            {
+                using var client = new HttpClient { BaseAddress = new Uri("https://api.adviceslip.com/") };
+                var response = await client.GetAsync("advice");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    var advice = JsonConvert.DeserializeObject<AdviceObject>(data);
+                    await ReplyAsync(advice.AdviceSlip.AdviceText);
+                }
+                else
+                {
+                    await ReplyAsync(errorMessage);
+                }
+            }
+            catch (Exception)
+            {
+                await ReplyAsync(errorMessage);
+            }
+        }
     }
 }
