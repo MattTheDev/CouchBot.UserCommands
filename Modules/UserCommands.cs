@@ -99,8 +99,9 @@ namespace CouchBot.UserCommands.Modules
             }
             catch (Exception)
             {
-                await ReplyAsync(errorMessage);
+                output = errorMessage;
             }
+            await ReplyAsync(output);
         }
 
         [Command("commandName", RunMode = RunMode.Async)]
