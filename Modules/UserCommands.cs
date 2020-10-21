@@ -34,7 +34,6 @@ namespace CouchBot.UserCommands.Modules
         public async Task GetCovidDataAsync()
         {
             string output;
-
             try
             {
                 using var client = new HttpClient { BaseAddress = new Uri("https://corona.lmao.ninja/") };
@@ -68,33 +67,49 @@ namespace CouchBot.UserCommands.Modules
             await ReplyAsync(output);
         }
 
-        [Command("Advice", RunMode = RunMode.Async)]
-        [Alias("advice", "quote", "tip")]
-        [Summary("returns a random life advice")]
+        [Command("bitcoin", RunMode = RunMode.Async)]
+        [Alias("bitcoin price", "bitcoin status", "bitcoin updates", "bitcoin update", "bitcoin")]
+        [Summary("returns the current price of bitcoin vs usd")]
         public async Task GetAdviceAsync()
         {
-            string errorMessage = "An error occured while fetching advice";
-
+            string errorMessage = "Unable to fetch current price of bitcoin. Try later!";
+            string output;
             try
             {
-                using var client = new HttpClient { BaseAddress = new Uri("https://api.adviceslip.com/") };
-                var response = await client.GetAsync("advice");
+                using var client = new HttpClient { BaseAddress = new Uri("https://api.coingecko.com/") };
+                var response = await client.GetAsync("api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=true&include_last_updated_at=false");
 
                 if (response.IsSuccessStatusCode)
                 {
                     var data = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    var advice = JsonConvert.DeserializeObject<AdviceObject>(data);
-                    await ReplyAsync(advice.AdviceSlip.AdviceText);
+                    var btcData = (JsonConvert.DeserializeObject<CryptoData>(data));
+                    var number = (int)btcData.Bitcoin.Usd24hChange;
+
+                    output = number switch
+                    {
+                        0 => $"Just flat and constant! Bitcoin is  {btcData.Bitcoin.Usd:n0} per USD with almost {btcData.Bitcoin.Usd24hChange:n0} percent change reported in last 24 hours.",
+                        1 => $"Nothing much interesting in crypto market today! Currently bitcoin is {btcData.Bitcoin.Usd:n0} per USD, with just {btcData.Bitcoin.Usd24hChange:n0} percent change reported in last 24 hours.",
+                        _ => $"Breaking News! There is a {btcData.Bitcoin.Usd24hChange:n0} percent change in price of bitcoin, currently standing at {btcData.Bitcoin.Usd:n0} per USD, "
+                    };
                 }
                 else
                 {
-                    await ReplyAsync(errorMessage);
+                    output = errorMessage;
                 }
             }
             catch (Exception)
             {
-                await ReplyAsync(errorMessage);
+                output = errorMessage;
             }
+            await ReplyAsync(output);
+        }
+
+        [Command("commandName", RunMode = RunMode.Async)]
+        [Alias("alias1", "alias2", "etc")]
+        [Summary("Description of the command")]
+        public Task CommandAsync()
+        {
+            return ReplyAsync("Your Return Text!");
         }
     }
 }
